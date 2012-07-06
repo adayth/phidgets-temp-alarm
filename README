@@ -1,0 +1,7 @@
+Author: Aday Talavera at <aday.talavera@gmail.com>
+
+Python daemon to read temperature values from a phidget Interface Kit with
+a Temperature Sensor attached to it.
+
+To configure the script, make a copy of config_example.py and edit it.
+There are comments in the file to explain everything.
