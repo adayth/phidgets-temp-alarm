@@ -29,9 +29,9 @@ class TemperatureSensor:
             #Attach handlers
             self.ik.setOnAttachHandler(inferfaceKitAttached)
             self.ik.setOnDetachHandler(interfaceKitDetached)
-            self.ik.setOnErrorhandler(interfaceKitError)            
+            self.ik.setOnErrorhandler(interfaceKitError)                        
             #Open phidgets
-            self.ik.openPhidget()
+            self.ik.openPhidget()            
             logging.info("TemperatureSensor created")
         except PhidgetException as e:
             logging.error("Phidget Exception %i: %s" % (e.code, e.details))

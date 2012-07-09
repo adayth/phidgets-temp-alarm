@@ -23,7 +23,13 @@ WARNING_FREQ = 1800
 ADMINS = (
           'your_email1@domain.com',
           #'your_email2@domain.com',          
-) 
+)
+
+# SENDER: address to be the sender of warning mails
+SENDER = 'noreply@cicei.com'
+
+# SUBJECT: subject for the warning mails
+SUBJECT = 'WARNING: Report mail temperatures'
 
 #################################################
 # Optional config values (default values should be ok)
