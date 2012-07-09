@@ -85,11 +85,13 @@ class TempCheckDaemon(Daemon):
                 
                 # Check if its a valid value
                 if temp:
-                    logging.debug("Temperature: %f degrees" % (temp))
-                    self.values.append({'time': time.time(), 'value': temp})
-                    self.checkWarning(temp)                                                            
+                    logging.debug("Temperature: %f degrees" % (temp))                                                                            
                 else:
                     logging.error("Error couldn't get temp from sensor")
+                
+                # Store value and check if need to send a waning mail
+                self.values.append({'time': time.time(), 'value': temp})
+                self.checkWarning(temp)
                 
                 # Wait to read again the sensor
                 time.sleep(CHECK_FREQ)
@@ -97,23 +99,36 @@ class TempCheckDaemon(Daemon):
             tempsensor.close()
     
     # Check if warning mail must be send to ADMINS    
-    def checkWarning(self, temp):                
-        if (temp > MAX_TEMP) and (time.time() - self.lastwarning > WARNING_FREQ):
-            logging.info("Sending warning mail to admins: %s" % (str(ADMINS)))
-            
-            # Build message contents
-            content = ""            
-            content += "Time                      Value\n"        
-            for i in range(len(self.values)):
-                content += "%s  %f degrees\n" % (time.ctime(self.values[i]['time']), self.values[i]['value'])
-            
-            # Try to send mails
-            try:                
-                mailutils.sendMail(SENDER, SUBJECT, ADMINS, content)                
-            except Exception, ex:
-                logging.error("Cannot send warning mail, reason: %s" % (str(ex)))
-            
-            self.lastwarning = time.time()                                       
+    def checkWarning(self, temp):        
+        if (time.time() - self.lastwarning > WARNING_FREQ):
+            # if sensor has an error check if we should send a warning mail            
+            if not temp:
+                errors = 0
+                for i in range(len(self.values)):
+                    if not self.values[i]['value']:
+                        errors += 1
+                if errors >= len(self.values):
+                    self.sendMail()                
+            # if temperature is above limit send warning mail
+            elif (temp > MAX_TEMP) :                
+                self.sendMail()                            
+    
+    # Send warning mail
+    def sendMail(self):        
+        logging.info("Sending warning mail to admins: %s" % (str(ADMINS)))
+        # Build message contents        
+        content = ""            
+        content += "Time                      Value\n"        
+        for i in range(len(self.values)):
+            content += "%s  %f degrees\n" % (time.ctime(self.values[i]['time']), self.values[i]['value'])
+        
+        # Try to send mails
+        try:                
+            mailutils.sendMail(SENDER, SUBJECT, ADMINS, content)                
+        except Exception, ex:
+            logging.error("Cannot send warning mail, reason: %s" % (str(ex)))
+        
+        self.lastwarning = time.time()                                       
 
 ############################
 # Log config
