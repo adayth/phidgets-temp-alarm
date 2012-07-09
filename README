@@ -1,7 +1,11 @@
 Author: Aday Talavera at <aday.talavera@gmail.com>
 
-Python daemon to read temperature values from a phidget Interface Kit with
+Python daemon to read temperature values from a phidgets Interface Kit with
 a Temperature Sensor attached to it.
 
 To configure the script, make a copy of config_example.py and edit it.
 There are comments in the file to explain everything.
+
+You should have installed phidgets driver from:
+
+http://www.phidgets.com/drivers.php
