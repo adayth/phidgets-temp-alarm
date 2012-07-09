@@ -24,7 +24,7 @@ Desktop.ini
 #########################
 # Python.gitignore
 #########################
-.py[co]
+*.py[co]
 
 # Packages
 *.egg
