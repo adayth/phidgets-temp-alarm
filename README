@@ -1,11 +1,63 @@
 Author: Aday Talavera at <aday.talavera@gmail.com>
 
+##############
+# Introduction
+##############
+
 Python daemon to read temperature values from a phidgets Interface Kit with
 a Temperature Sensor attached to it.
+
+##############
+# Installation
+##############
+
+You should install phidgets driver from: http://www.phidgets.com/drivers.php
+
+###############
+# Configuration
+###############
 
 To configure the script, make a copy of config_example.py and edit it.
 There are comments in the file to explain everything.
 
-You should have installed phidgets driver from:
+#######
+# Usage
+#######
 
-http://www.phidgets.com/drivers.php
+To run the daemon you should use the next commands:
+
+* To start the daemon:
+python run.py start
+
+* To stop the daemon:
+python run.py stop
+
+* To test configuration and view debug messages:
+python run.py run
+
+############################
+# /etc/init.d example script
+############################
+
+If you want to use the daemon like other system services, so you will be able to do
+service phidgets-temp-daemon start and assing runlevels to start services on system
+start, you can user the example script provided in the initscript folder.
+
+To use it execute the followings commands (you must have administrative rights):
+
+* Install the script
+cp initscript/phidgets-temp-daemon /etc/init.d
+chmod 755 /etc/init.d/phidgets-temp-daemon
+
+* Configure the script
+You must edit the example script to configure the path to install directory
+
+* Start script on system start
+update-rc.d phidgets-temp-daemon defaults
+
+If you don't have update-rc.d command you can add this line to /etc/rc.local
+service phidgets-temp-daemon start
+
+* Stop starting script on system start
+update-rc.d -f  phidgets-temp-daemon remove
+
